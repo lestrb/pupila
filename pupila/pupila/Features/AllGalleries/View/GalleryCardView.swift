@@ -10,22 +10,28 @@ import SwiftUI
 struct GalleryCardView: View {
     var body: some View {
         
+        
+        var galleryName = "Casamento"
+        var galleryPhotoCounter = 2
+        var galleryCover = "casamento"
+        var galleryDeadline = 2
+
+        
         ZStack(alignment: .bottomTrailing) {
             
             HStack {
                 
                 ZStack {
                     
-                    Image("casamento")
+                    Image(galleryCover)
                         .colorMultiply(.gray)
                     
                         VStack(spacing: 30) {
                             
-                            VStack { Text("Casamento")
+                            VStack { Text(galleryName)
                                     .bold()
                                     .font(.largeTitle)
-                                Text("30 fotos")
-                                    .fontWeight(.semibold)
+                                Text("\(galleryPhotoCounter) \(galleryPhotoCounter == 1 ? "foto" : "fotos")") .fontWeight(.semibold)
                                     .font(.headline)
                             }
                             // variável de quantidade de fotos in casamento
@@ -36,8 +42,7 @@ struct GalleryCardView: View {
             .frame(width: 350, height: 160)
             .cornerRadius(30)
             
-            Image(systemName: "checkmark.circle.fill")
-                .padding()
+            GalleryDeadlineDetailView()
             //GalleryCheckButton
 
         }
