@@ -9,7 +9,35 @@ import SwiftUI
 
 struct AllGalleriesView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+//        Picker("Abertas")
+//            .pickerStyle(SegmentedPickerStyle)
+     
+        NavigationStack {
+            
+            ScrollView {
+                GalleryCardView()
+                GalleryCardView()
+                GalleryCardView()
+                
+            }
+            .padding()
+            .navigationTitle("Galerias")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    
+              NavigationLink(destination: UserProfileView()) {
+                            Image(systemName: "person")
+                        }
+                }
+                
+                
+            }
+            //ForEach - If Abertas
+        }
+
+        
+        
     }
 }
 
