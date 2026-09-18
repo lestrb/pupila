@@ -2,7 +2,7 @@
 //  UserProfileView.swift
 //  pupila
 //
-//  Created by João Fernando Gama Barros on 17/09/26.
+//  Created by Michel de Oliveira Silva on 18/09/26.
 //
 
 import SwiftUI
