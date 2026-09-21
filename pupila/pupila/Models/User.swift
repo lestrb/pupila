@@ -7,7 +7,6 @@
 
 import Foundation
 import CloudKit
-import SwiftUI
 
 struct User: Identifiable {
     // Retornados pela Apple com o login
