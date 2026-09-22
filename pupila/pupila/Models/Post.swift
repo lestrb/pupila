@@ -12,15 +12,44 @@ import CloudKit
 import SwiftUI
 
 struct Post {
-    let postId: CKRecord.ID
+    enum RecordKey{ //variaveis que o bd vai ter acesso (mapeando e tal)
+        static let recordType = "Post" //isso aqui eh o nome da tabela no bd
+        static let postUserID = "postUserID"
+        static let postGalleryID = "postGalleryID"
+        static let postDescription = "postDescription"
+        static let postDate = "postDate"
+        static let isPublic =  "isPublic"
+        static let postPhoto = "postPhoto"
+    }
+    
+    let postID: CKRecord.ID
     var postUserID: CKRecord.Reference //uma referencia!! tipo o @relationship do Swift Data? -> sim! oba!
     var postGalleryID: CKRecord.Reference //vamos usar o postUserID e o postGalleryID como referencia pro relacionamento entre user e gallery (ou seja o post é como o meio entre o user e a galeria)
-    var postPhotoURL: URL? //como que eh essa porra? -> URL da imagem salva em disco que vamos passar como CKAsset 😎
     var postDescription: String?
     var postDate: Date
     var isPublic: Bool
+    var postPhotoURL: URL? //como que eh essa porra? -> URL da imagem salva em disco que vamos passar como CKAsset 😎
+        
     
-    static let recordType = "Post" //isso aqui eh o nome da tabela no bd
+    //static let recordType = "Post" //isso aqui eh o nome da tabela no bd
+    
+    init( //inicializando o post com valores padrao
+        postID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
+        postUserID: CKRecord.Reference,
+        postGalleryID: CKRecord.Reference,
+        postDescription: String? = nil, //a descricao eh opcional mesmo? nao sei.
+        postDate: Date = Date(),
+        isPublic: Bool = true, //todo post publicado inicialmente eh publico ok? ok.
+        postPhotoURL: URL? = nil
+    ) { //ainda é preciso inicializar a struct com o init padrao (para alem do init?)
+        self.postID = postID
+        self.postUserID = postUserID
+        self.postGalleryID = postGalleryID
+        self.postDescription = postDescription
+        self.postDate = postDate
+        self.isPublic = isPublic
+        self.postPhotoURL = postPhotoURL
+    }
     
     init?(record: CKRecord) { //lendo da nuvem
         guard let postUserID = record["postUserID"] as? CKRecord.Reference,
@@ -30,7 +59,7 @@ struct Post {
             return nil
         }
         
-        self.postId = record.recordID
+        self.postID = record.recordID
         self.postUserID = postUserID
         self.postGalleryID = postGalleryID
         self.postDate = postDate
@@ -46,7 +75,7 @@ struct Post {
     }
     
     func toRecord() -> CKRecord { //converte o modelo struct para CKRecord (aka salvando na nuvem)
-        let record = CKRecord(recordType: Self.recordType, recordID: postId)
+        let record = CKRecord(recordType: RecordKey.recordType, recordID: postID)
         record["postUserID"] = postUserID
         record["postGalleryID"] = postGalleryID
         record["postDate"] = postDate as CKRecordValue //transformando no tipo legivel pelo bd
