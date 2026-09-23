@@ -8,24 +8,34 @@
 import SwiftUI
 
 struct GalleryCardView: View {
+    
+    var galleryName: String
+    var galleryCoverURL: URL?
+    var isOpen: Bool
+    var galleryPhotoCounter: Int64
+    
     var body: some View {
-        
-        
-        var galleryName = "Casamento"
-        var galleryPhotoCounter = 2
-        var galleryCover = "casamento"
-        var galleryDeadline = 2
-
-        
         ZStack(alignment: .bottomTrailing) {
             
             HStack {
                 
                 ZStack {
                     
-                    Image(galleryCover)
-                        .colorMultiply(.gray)
-                    
+                    if let galleryCoverURL = galleryCoverURL {
+                        AsyncImage(url: galleryCoverURL) { image
+                            
+                            in image
+                                .resizable()
+                                .scaledToFill()
+                                .colorMultiply(.gray)
+                            
+                        } placeholder: {
+                            Color.black
+                        }
+                    } else {
+                            Color.black
+                        }
+                        
                         VStack(spacing: 30) {
                             
                             VStack { Text(galleryName)
@@ -36,24 +46,24 @@ struct GalleryCardView: View {
                             }
                             // variável de quantidade de fotos in casamento
                         }
+                    }
+                    
                 }
+                .frame(width: 350, height: 160)
+                .cornerRadius(30)
+                
+                GalleryDeadlineDetailView(galleryDeadline: 2)
+                //GalleryCheckButton
                 
             }
-            .frame(width: 350, height: 160)
-            .cornerRadius(30)
+            .foregroundStyle(.white)
+            //        teste
             
-            GalleryDeadlineDetailView()
-            //GalleryCheckButton
-
+            
+            
         }
-        .foregroundStyle(.white)
-//        teste
-
-        
-
     }
-}
 
 #Preview {
-    GalleryCardView()
+    GalleryCardView(galleryName: "Casamento", galleryCoverURL: nil, isOpen: true, galleryPhotoCounter: 12)
 }

@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct GalleryDeadlineDetailView: View {
-
     
+    var galleryDeadline: Int
+
     var body: some View {
         
-    var galleryDeadline = 1
-
     
         Label("\(galleryDeadline) \(galleryDeadline == 1 ? "dia restante" : "dias restantes")", systemImage: "timer")
             .fontWeight(.semibold)
@@ -25,5 +24,5 @@ struct GalleryDeadlineDetailView: View {
     }
 
 #Preview {
-    GalleryDeadlineDetailView()
+    GalleryDeadlineDetailView(galleryDeadline: 2)
 }
