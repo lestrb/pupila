@@ -9,18 +9,36 @@ import SwiftUI
 
 struct AllGalleriesView: View {
     
+    @State var selected: SegmentedControlGalleryView.IsOpenFilter = .open
+    
+    var filteredGalleries: [Gallery] {
+        
+        Gallery.mockData.filter { gallery in
+            
+            selected == .open ? gallery.isOpen : !gallery.isOpen
+            
+        }
+        
+        // usar guard quando for usar dados reais
+        
+    }
     
     var body: some View {
-    
         
-//        Picker("Abertas")
-//            .pickerStyle(SegmentedPickerStyle)
-     
+       
         NavigationStack {
             
+            VStack {
+                SegmentedControlGalleryView(selected: $selected)
+                
+            }
+            .padding()
+            
             ScrollView {
-    
-                    ForEach(Gallery.mockData, id: \.galleryID) { gallery in
+                
+                  
+                
+                    ForEach(filteredGalleries, id: \.galleryID) { gallery in
                         
                         GalleryCardView(galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter)
                     

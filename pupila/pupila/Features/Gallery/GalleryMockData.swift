@@ -23,7 +23,7 @@ extension Gallery {
                 ),
         
         Gallery(
-                    galleryName: "Rua",
+                    galleryName: "P&B",
                     galleryDeadline: Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date(),
                     galleryPhotoCounter: 20
                 )

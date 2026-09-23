@@ -24,5 +24,5 @@ struct GalleryDeadlineDetailView: View {
     }
 
 #Preview {
-    GalleryDeadlineDetailView(galleryDeadline: 2)
+    GalleryDeadlineDetailView(galleryDeadline: 1)
 }
