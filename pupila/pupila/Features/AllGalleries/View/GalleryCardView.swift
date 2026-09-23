@@ -13,6 +13,11 @@ struct GalleryCardView: View {
     var galleryCoverURL: URL?
     var isOpen: Bool
     var galleryPhotoCounter: Int64
+    var galleryDeadline: Date
+    
+    var daysRemaining: Int {
+        Calendar.current.dateComponents([.day], from: Date(), to: galleryDeadline).day ?? 0 }
+
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -52,9 +57,14 @@ struct GalleryCardView: View {
                 .frame(width: 350, height: 160)
                 .cornerRadius(30)
                 
-                GalleryDeadlineDetailView(galleryDeadline: 2)
+            if isOpen {
+                Label(
+                    "\(daysRemaining) \(daysRemaining == 1 ? "dia restante" : "dias restantes")", systemImage: "timer")
+                    .fontWeight(.semibold)
+                    .font(.caption)
+                    .padding()
                 //GalleryCheckButton
-                
+              }
             }
             .foregroundStyle(.white)
             //        teste
@@ -65,5 +75,5 @@ struct GalleryCardView: View {
     }
 
 #Preview {
-    GalleryCardView(galleryName: "Casamento", galleryCoverURL: nil, isOpen: true, galleryPhotoCounter: 12)
+    GalleryCardView(galleryName: "Casamento", galleryCoverURL: nil, isOpen: true, galleryPhotoCounter: 12, galleryDeadline: .now)
 }

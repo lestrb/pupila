@@ -40,7 +40,7 @@ struct AllGalleriesView: View {
                 
                     ForEach(filteredGalleries, id: \.galleryID) { gallery in
                         
-                        GalleryCardView(galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter)
+                        GalleryCardView(galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter, galleryDeadline: gallery.galleryDeadline)
                     
                     
                     }
@@ -58,7 +58,6 @@ struct AllGalleriesView: View {
                 
                 
             }
-            //ForEach - If Abertas
         }
 
         
