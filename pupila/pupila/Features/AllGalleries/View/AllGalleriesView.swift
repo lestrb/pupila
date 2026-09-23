@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct AllGalleriesView: View {
+    
+    
     var body: some View {
+    
         
 //        Picker("Abertas")
 //            .pickerStyle(SegmentedPickerStyle)
@@ -16,10 +19,14 @@ struct AllGalleriesView: View {
         NavigationStack {
             
             ScrollView {
-                GalleryCardView()
-                GalleryCardView()
-                GalleryCardView()
-                
+    
+                    ForEach(Gallery.mockData, id: \.galleryID) { gallery in
+                        
+                        GalleryCardView(galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter)
+                    
+                    
+                    }
+
             }
             .padding()
             .navigationTitle("Galerias")
