@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct User: Identifiable {
+struct User: Identifiable, CloudKitProtocol {
     // Retornados pela Apple com o login
     let id: String // AppleID do usuário (userIdentifier)
     var name: String
@@ -69,7 +69,7 @@ struct User: Identifiable {
     }
     
     // Codificador de Swift pra CloudKit
-    var record: CKRecord {
+    func toRecord() -> CKRecord {
         let recordID = CKRecord.ID(recordName: id)
         let record = CKRecord(recordType: RecordKeys.recordType, recordID: recordID)
         

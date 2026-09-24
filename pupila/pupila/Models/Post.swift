@@ -9,9 +9,8 @@
 
 import Foundation
 import CloudKit
-import SwiftUI
 
-struct Post {
+struct Post: Identifiable, CloudKitProtocol {
     enum RecordKey{ //variaveis que o bd vai ter acesso (mapeando e tal)
         static let recordType = "Post" //isso aqui eh o nome da tabela no bd
         static let postUserID = "postUserID"
@@ -22,7 +21,7 @@ struct Post {
         static let postPhoto = "postPhoto"
     }
     
-    let postID: CKRecord.ID
+    let id: CKRecord.ID
     var postUserID: CKRecord.Reference //uma referencia!! tipo o @relationship do Swift Data? -> sim! oba!
     var postGalleryID: CKRecord.Reference //vamos usar o postUserID e o postGalleryID como referencia pro relacionamento entre user e gallery (ou seja o post é como o meio entre o user e a galeria)
     var postDescription: String?
@@ -34,7 +33,7 @@ struct Post {
     //static let recordType = "Post" //isso aqui eh o nome da tabela no bd
     
     init( //inicializando o post com valores padrao
-        postID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
+        id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
         postUserID: CKRecord.Reference,
         postGalleryID: CKRecord.Reference,
         postDescription: String? = nil, //a descricao eh opcional mesmo? nao sei.
@@ -42,7 +41,7 @@ struct Post {
         isPublic: Bool = true, //todo post publicado inicialmente eh publico ok? ok.
         postPhotoURL: URL? = nil
     ) { //ainda é preciso inicializar a struct com o init padrao (para alem do init?)
-        self.postID = postID
+        self.id = id
         self.postUserID = postUserID
         self.postGalleryID = postGalleryID
         self.postDescription = postDescription
@@ -59,7 +58,7 @@ struct Post {
             return nil
         }
         
-        self.postID = record.recordID
+        self.id = record.recordID
         self.postUserID = postUserID
         self.postGalleryID = postGalleryID
         self.postDate = postDate
@@ -75,7 +74,7 @@ struct Post {
     }
     
     func toRecord() -> CKRecord { //converte o modelo struct para CKRecord (aka salvando na nuvem)
-        let record = CKRecord(recordType: RecordKey.recordType, recordID: postID)
+        let record = CKRecord(recordType: RecordKey.recordType, recordID: id)
         record["postUserID"] = postUserID
         record["postGalleryID"] = postGalleryID
         record["postDate"] = postDate as CKRecordValue //transformando no tipo legivel pelo bd

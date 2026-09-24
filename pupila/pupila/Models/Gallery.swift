@@ -6,12 +6,9 @@
 //
 
 import Foundation
-import SwiftUI
 import CloudKit
 
-import SwiftData
-
-struct Gallery {
+struct Gallery: Identifiable, CloudKitProtocol {
     
     enum RecordKey {
         static let recordType = "Gallery"
@@ -22,7 +19,7 @@ struct Gallery {
         static let galleryCover = "galleryCover"
     }
     
-    var galleryID: CKRecord.ID
+    var id: CKRecord.ID
     var galleryName: String
     var galleryDeadline: Date
     var galleryCoverURL: URL?
@@ -32,7 +29,7 @@ struct Gallery {
     
     
     init(
-        galleryID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
+        id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
         galleryName: String,
         galleryDeadline: Date = Date(),
         galleryCoverURL: URL? = nil,
@@ -40,7 +37,7 @@ struct Gallery {
         galleryPhotoCounter: Int64
         
     ) {
-        self.galleryID = galleryID
+        self.id = id
         self.galleryName = galleryName
         self.galleryDeadline = galleryDeadline
         self.galleryCoverURL = galleryCoverURL
@@ -57,7 +54,7 @@ struct Gallery {
             return nil
         }
         
-        self.galleryID = record.recordID
+        self.id = record.recordID
         self.galleryName = galleryName
         self.galleryDeadline = galleryDeadline
         self.galleryPhotoCounter = galleryPhotoCounter
@@ -74,7 +71,7 @@ struct Gallery {
     }
     
     func toRecord() -> CKRecord {
-        let record = CKRecord(recordType: RecordKey.recordType, recordID: galleryID)
+        let record = CKRecord(recordType: RecordKey.recordType, recordID: id)
         record[RecordKey.galleryName] = galleryName as CKRecordValue
         record[RecordKey.isOpen] = (isOpen ? 1 : 0) as CKRecordValue
         record[RecordKey.galleryDeadline] = galleryDeadline as CKRecordValue
