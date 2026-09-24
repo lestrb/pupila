@@ -4,13 +4,12 @@
 //
 //  Created by Michel de Oliveira Silva on 14/09/26.
 //
-
 //eh minha primeira vez usando CloudKit. Vou me dar a liberdade de comentar mais o codigo
 
 import Foundation
 import CloudKit
 
-struct Post: Identifiable, CloudKitProtocol {
+struct Post: Identifiable, CloudKitProtocol, Hashable {
     enum RecordKey{ //variaveis que o bd vai ter acesso (mapeando e tal)
         static let recordType = "Post" //isso aqui eh o nome da tabela no bd
         static let postUserID = "postUserID"
@@ -22,21 +21,18 @@ struct Post: Identifiable, CloudKitProtocol {
     }
     
     let id: CKRecord.ID
-    var postUserID: CKRecord.Reference //uma referencia!! tipo o @relationship do Swift Data? -> sim! oba!
-    var postGalleryID: CKRecord.Reference //vamos usar o postUserID e o postGalleryID como referencia pro relacionamento entre user e gallery (ou seja o post é como o meio entre o user e a galeria)
+    var postUserID: CKRecord.Reference //uma referencia!! tipo o @relationship do Swift Data!
+    var postGalleryID: CKRecord.Reference //vamos usar o postUserID e o postGalleryID como referencia pro relacionamento entre user e gallery
     var postDescription: String?
     var postDate: Date
     var isPublic: Bool
-    var postPhotoURL: URL? //como que eh essa porra? -> URL da imagem salva em disco que vamos passar como CKAsset 😎
+    var postPhotoURL: URL? //URL da imagem salva em disco que vamos passar como CKAsset 😎
         
-    
-    //static let recordType = "Post" //isso aqui eh o nome da tabela no bd
-    
     init( //inicializando o post com valores padrao
         id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
         postUserID: CKRecord.Reference,
         postGalleryID: CKRecord.Reference,
-        postDescription: String? = nil, //a descricao eh opcional mesmo? nao sei.
+        postDescription: String? = nil, //a descricao eh opcional mesmo?sim
         postDate: Date = Date(),
         isPublic: Bool = true, //todo post publicado inicialmente eh publico ok? ok.
         postPhotoURL: URL? = nil
@@ -52,7 +48,7 @@ struct Post: Identifiable, CloudKitProtocol {
     
     init?(record: CKRecord) { //lendo da nuvem
         guard let postUserID = record["postUserID"] as? CKRecord.Reference,
-              let postGalleryID = record["postGalleryID"] as? CKRecord.Reference, //por que eu passo uma string para record?? -> o CKRecord funciona como um dicionario!! to atribuindo a string "postDescription" como chave pra a string que vai estar na variavel propriamente
+              let postGalleryID = record["postGalleryID"] as? CKRecord.Reference, //o CKRecord funciona como um dicionario!! to atribuindo a string "postDescription"
               let postDate = record["postDate"] as? Date,
               let isPublic = record["isPublic"] as? Int64 else {
             return nil
@@ -62,11 +58,11 @@ struct Post: Identifiable, CloudKitProtocol {
         self.postUserID = postUserID
         self.postGalleryID = postGalleryID
         self.postDate = postDate
-        self.isPublic = (isPublic == 1) //acucar sintatico tem um if aqui dentro e pa
+        self.isPublic = (isPublic == 1)
         
-        self.postDescription = record["postDescription"] as? String //como postDescription eh opcional, da pra fazer um cast simples fora do guard let
-        //eventualmente vai ter a logica pra baixar da nuvem e salvar no disco do iphone (memoria temporaria enquanto o user ta vendo a foto)
-        if let asset = record["postPhoto"] as? CKAsset {//mhmmmmm
+        self.postDescription = record["postDescription"] as? String
+        //eventualmente vai ter a logica pra baixar da nuvem e salvar no disco do iphone
+        if let asset = record["postPhoto"] as? CKAsset {
             self.postPhotoURL = asset.fileURL
         } else {
             self.postPhotoURL = nil
@@ -85,7 +81,7 @@ struct Post: Identifiable, CloudKitProtocol {
         }
         
         if let photoURL = postPhotoURL { //desempacotando photoURL
-            let asset = CKAsset(fileURL: photoURL) //sintaxe desse cacete (ckasset hahaaha)
+            let asset = CKAsset(fileURL: photoURL)
             record["postPhoto"] = asset
         }
         
