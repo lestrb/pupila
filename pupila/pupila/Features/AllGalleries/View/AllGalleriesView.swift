@@ -18,9 +18,7 @@ struct AllGalleriesView: View {
             selected == .open ? gallery.isOpen : !gallery.isOpen
             
         }
-        
-        // usar guard quando for usar dados reais
-        
+                
     }
     
     var body: some View {
@@ -36,15 +34,25 @@ struct AllGalleriesView: View {
             
             ScrollView {
                 
-                  
-                
                     ForEach(filteredGalleries, id: \.galleryID) { gallery in
                         
-                        GalleryCardView(galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter, galleryDeadline: gallery.galleryDeadline)
-                    
-                    
-                    }
+                        NavigationLink(value: gallery) {
+                            
+                            GalleryCardView(
+                                galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter, galleryDeadline: gallery.galleryDeadline
+                            )
+                            
+                        }
+                        .buttonStyle(.plain)
 
+                    }
+                    
+
+            }
+            .navigationDestination(for: Gallery.self) { gallery in
+                
+                GalleryView(gallery: gallery)
+                
             }
             .padding()
             .navigationTitle("Galerias")
