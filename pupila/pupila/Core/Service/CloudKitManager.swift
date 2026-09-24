@@ -22,4 +22,21 @@ class CloudKitManager {
         
         return item
     }
+    
+    func search<T: CloudKitProtocol> (for id: CKRecord.ID, on database: CKDatabase) async throws -> T? {
+        do {
+            let record = try await database.record(for: id)
+            return T(record: record)
+            
+        } catch let error as CKError where error.code == .unknownItem {
+            return nil //caso ele nao encontre o objeto no db ele vai retornar vazio
+            
+        } catch {
+            throw error //se der alguma qualquer outra bronca hihihihihi
+        }
+    }
+    
+    func delete(for id: CKRecord.ID, on database: CKDatabase) async throws {
+        _ = try await database.deleteRecord(withID: id)
+    }
 }
