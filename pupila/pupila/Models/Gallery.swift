@@ -25,7 +25,6 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
     var galleryCoverURL: URL?
     var isOpen: Bool
     var galleryPhotoCounter: Int64
-    //var galleryPosts: [CKRecord.Reference] //um array de referencias aos ids dos posts que pertencem aa gallery -> nao precisa, ja estamos instanciando essas relacoes em post
     
     
     init(
@@ -47,7 +46,6 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
     
     init?(record:CKRecord) {
         guard let galleryName = record[RecordKey.galleryName] as? String,
-              //let galleryPosts = record["galleryPosts"] as? [CKRecord.Reference], //nao precisa referenciar os filhos do pai ne ahaahhahahah😎
               let galleryDeadline = record[RecordKey.galleryDeadline] as? Date,
               let galleryPhotoCounter = record[RecordKey.galleryPhotoCounter] as? Int64,
               let isOpen = record[RecordKey.isOpen] as? Int64 else {
@@ -59,10 +57,7 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
         self.galleryDeadline = galleryDeadline
         self.galleryPhotoCounter = galleryPhotoCounter
         self.isOpen = (isOpen == 1)
-        
-        
-        //self.galleryPosts = record["galleryPosts"] as? [CKRecord.Reference] ?? [] //inicializa como array vazio por seguranca caso o guard let retorne nil
-        
+                
         if let asset = record["galleryCover"] as? CKAsset {
             self.galleryCoverURL = asset.fileURL
         } else {
@@ -76,10 +71,6 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
         record[RecordKey.isOpen] = (isOpen ? 1 : 0) as CKRecordValue
         record[RecordKey.galleryDeadline] = galleryDeadline as CKRecordValue
         record[RecordKey.galleryPhotoCounter] = galleryPhotoCounter as CKRecordValue
-        
-//        if !galleryPosts.isEmpty { //se nao tiver vazio, da pra inicializar no container normalmente
-//            record["galleryPosts"] = galleryPosts as CKRecordValue
-//        }
         
         if let coverURL = galleryCoverURL {
             let asset = CKAsset(fileURL: coverURL)

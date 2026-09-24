@@ -16,4 +16,10 @@ class CloudKitManager {
     let privateDB = CKContainer.default().privateCloudDatabase //nao vamos usar shared!
     
     private init() {} //aqui a gente forca o construtor do container a pertencer somente ao CloudKitManager
+    
+    func save <T: CloudKitProtocol> (_ item: T, no banco: CKDatabase) async throws -> T {
+        _ = try await banco.save(item.toRecord())
+        
+        return item
+    }
 }

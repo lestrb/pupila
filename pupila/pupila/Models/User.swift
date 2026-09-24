@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct User: Identifiable, CloudKitProtocol {
+struct User: Identifiable, CloudKitProtocol, Hashable {
     // Retornados pela Apple com o login
     let id: String // AppleID do usuário (userIdentifier)
     var name: String
