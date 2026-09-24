@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct Gallery: Identifiable, CloudKitProtocol {
+struct Gallery: Identifiable, CloudKitProtocol, Hashable {
     
     enum RecordKey {
         static let recordType = "Gallery"
