@@ -9,6 +9,8 @@ import SwiftUI
 import PhotosUI
 
 struct PostFormView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var showNextView = false
     @State private var postPhoto: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @State private var postDescription = ""
@@ -23,12 +25,13 @@ struct PostFormView: View {
                             Image(uiImage: selectedImage)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 220, height: 250)
+                                .frame(maxWidth: .infinity)
+                        
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                     } else {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color(.secondarySystemBackground))
-                            .frame(width: 220, height: 250)
+                            .frame(maxWidth: .infinity)
                             .overlay {
                                 Text("Upload de mídia")
                                     .foregroundStyle(.secondary)
@@ -36,6 +39,7 @@ struct PostFormView: View {
                     }
 
                 }
+                .padding(30)
                 .onChange(of: postPhoto) { _, newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
@@ -43,19 +47,63 @@ struct PostFormView: View {
                         }
                     }
                 }
-                VStack(alignment: .leading) {
-                    Text("Descrição")
-                    
-
+                Form{
+                    Section(){
+                        TextField("Adcione sua descrição", text: $postDescription, axis: .vertical)
+                            .lineLimit(1...4)
+                            .textFieldStyle(.plain)
+                            .padding(15)
+                            .background(.capsulePupila.opacity(0.24), in: .buttonBorder)
+                            .onChange(of: postDescription){
+                                    postDescription = String(postDescription.prefix(150))
+                                }
+                    }
+                    header: {
+                        Text("Descrição")
+                            .foregroundStyle(Color.primary)
+                            .textCase(nil)
+                            .font(.body)
+                    }
                 }
+                .scrollContentBackground(.hidden)
+                .background(.white)
+                YellowButton(titulo: "Seguinte") {
+                    showNextView = true
+                }
+                
                 
             }
                     .navigationTitle("Adicionar Foto")
                     .navigationBarTitleDisplayMode(.inline)
+                    .navigationDestination(isPresented: $showNextView){
+                        PostFormViewNext()
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Image(systemName: "xmark")
+                            }
+                        }
+                    }
+        }
+    }
+}
+struct PostFormPreview: View {
+    @State private var showPostForm = false
+
+    var body: some View {
+        Button("Adicionar Foto") {
+            showPostForm = true
+        }
+        .sheet(isPresented: $showPostForm) {
+            PostFormView()
         }
     }
 }
 
+
 #Preview {
-    PostFormView()
+    PostFormPreview()
 }
