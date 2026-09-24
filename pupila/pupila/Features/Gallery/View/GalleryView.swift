@@ -12,7 +12,8 @@ struct GalleryView: View {
     let gallery: Gallery
 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        Text(gallery.galleryName)
     }
 }
 
