@@ -47,10 +47,10 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
     }
     
     init?(record: CKRecord) { //lendo da nuvem
-        guard let postUserID = record["postUserID"] as? CKRecord.Reference,
-              let postGalleryID = record["postGalleryID"] as? CKRecord.Reference, //o CKRecord funciona como um dicionario!! to atribuindo a string "postDescription"
-              let postDate = record["postDate"] as? Date,
-              let isPublic = record["isPublic"] as? Int64 else {
+        guard let postUserID = record[RecordKey.postUserID] as? CKRecord.Reference,
+              let postGalleryID = record[RecordKey.postGalleryID] as? CKRecord.Reference, //o CKRecord funciona como um dicionario!! to atribuindo a string "postDescription"
+              let postDate = record[RecordKey.postDate] as? Date,
+              let isPublic = record[RecordKey.isPublic] as? Bool else {
             return nil
         }
         
@@ -58,11 +58,11 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         self.postUserID = postUserID
         self.postGalleryID = postGalleryID
         self.postDate = postDate
-        self.isPublic = (isPublic == 1)
+        self.isPublic = isPublic
         
-        self.postDescription = record["postDescription"] as? String
+        self.postDescription = record[RecordKey.postDescription] as? String
         //eventualmente vai ter a logica pra baixar da nuvem e salvar no disco do iphone
-        if let asset = record["postPhoto"] as? CKAsset {
+        if let asset = record[RecordKey.postPhoto] as? CKAsset {
             self.postPhotoURL = asset.fileURL
         } else {
             self.postPhotoURL = nil
@@ -71,18 +71,18 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
     
     func toRecord() -> CKRecord { //converte o modelo struct para CKRecord (aka salvando na nuvem)
         let record = CKRecord(recordType: RecordKey.recordType, recordID: id)
-        record["postUserID"] = postUserID
-        record["postGalleryID"] = postGalleryID
-        record["postDate"] = postDate as CKRecordValue //transformando no tipo legivel pelo bd
-        record["isPublic"] = (isPublic ? 1 : 0) as CKRecordValue
+        record[RecordKey.postUserID] = postUserID
+        record[RecordKey.postGalleryID] = postGalleryID
+        record[RecordKey.postDate] = postDate as CKRecordValue //transformando no tipo legivel pelo bd
+        record[RecordKey.isPublic] = isPublic as CKRecordValue
         
         if let postDescription = postDescription {
-            record["postDescription"] = postDescription as CKRecordValue
+            record[RecordKey.postDescription] = postDescription as CKRecordValue
         }
         
         if let photoURL = postPhotoURL { //desempacotando photoURL
             let asset = CKAsset(fileURL: photoURL)
-            record["postPhoto"] = asset
+            record[RecordKey.postPhoto] = asset
         }
         
         return record
