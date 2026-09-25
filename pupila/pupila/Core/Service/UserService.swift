@@ -10,6 +10,7 @@ import CloudKit
 
 protocol UserServiceProtocol {
     func createUser (_ user: User) async throws -> User
+    func fetchUser (by id: CKRecord.ID) async throws -> User?
 }
 
 class UserService: UserServiceProtocol{
@@ -24,9 +25,13 @@ class UserService: UserServiceProtocol{
     }
     
     func createUser(_ user: User) async throws -> User {
-        return try await manager.save(user, no: database) // Usa func save do manager
+        return try await manager.save(user, on: database) // Usa func save do manager
     }
 
+    func fetchUser(by id: CKRecord.ID) async throws -> User? {
+        return try await manager.search(for: id, on: database)
+    }
+    
     
     
     
