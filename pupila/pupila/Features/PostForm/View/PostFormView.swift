@@ -49,7 +49,7 @@ struct PostFormView: View {
                 }
                 Form{
                     Section(){
-                        TextField("Adcione sua descrição", text: $postDescription, axis: .vertical)
+                        TextField("Adicione uma descrição", text: $postDescription, axis: .vertical)
                             .lineLimit(1...4)
                             .textFieldStyle(.plain)
                             .padding(15)
@@ -59,10 +59,18 @@ struct PostFormView: View {
                                 }
                     }
                     header: {
-                        Text("Descrição")
-                            .foregroundStyle(Color.primary)
-                            .textCase(nil)
-                            .font(.body)
+                        HStack{
+                            Text("Descrição:")
+                                .foregroundStyle(Color.primary)
+                                .textCase(nil)
+                                .font(.body)
+                            Spacer()
+                                
+                            Text("\(postDescription.count)/150")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            
+                        }
                     }
                 }
                 .scrollContentBackground(.hidden)

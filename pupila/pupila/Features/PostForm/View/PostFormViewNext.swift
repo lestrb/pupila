@@ -16,7 +16,7 @@ struct PostFormViewNext: View {
             
         Form{
             Section(){
-                TextField("Adcione a camera da fotografia", text: $postPhotoCamera, axis: .vertical)
+                TextField("Adicione a camera da fotografia", text: $postPhotoCamera, axis: .vertical)
                     .lineLimit(1...2)
                     .onChange(of: postPhotoCamera){
                         postPhotoCamera = String(postPhotoCamera.prefix(55))
@@ -26,25 +26,38 @@ struct PostFormViewNext: View {
                     .padding(15)
                     .background(.capsulePupila.opacity(0.24), in: .buttonBorder)
             } header: {
-                Text("Camera")
-                    .foregroundStyle(Color.primary)
-                    .textCase(nil)
-                    .font(.body)
+                HStack{
+                    Text("Camera:")
+                        .foregroundStyle(Color.primary)
+                        .textCase(nil)
+                        .font(.body)
+                    Spacer()
+                    Text("\(postPhotoCamera.count)/55")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
             Section(){
-                TextField("Adcione o local da fotografia", text: $postPhotoPlace, axis: .vertical)
+                TextField("Adicione o local da fotografia", text: $postPhotoPlace, axis: .vertical)
                     .lineLimit(1...3)
                     .onChange(of: postPhotoPlace){
-                        postPhotoPlace = String(postPhotoPlace.prefix(78))
+                        postPhotoPlace = String(postPhotoPlace.prefix(75))
                         }
                     .textFieldStyle(.plain)
                     .padding(15)
                     .background(.capsulePupila.opacity(0.24), in: .buttonBorder)
             } header: {
-                Text("Local")
-                    .foregroundStyle(Color.primary)
-                    .textCase(nil)
-                    .font(.body)
+                HStack{
+                    Text("Local:")
+                        .foregroundStyle(Color.primary)
+                        .textCase(nil)
+                        .font(.body)
+                    Spacer()
+                    Text("\(postPhotoPlace.count)/75")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
             }
             Section{
                         DatePicker(
@@ -57,14 +70,15 @@ struct PostFormViewNext: View {
         }
         .scrollContentBackground(.hidden)
         .background(.white)
-//        DatePicker(
-//            "Data e Hora:", //titulo do picker
-//            selection: $dataSelecionada,
-//            displayedComponents: [.date, .hourAndMinute]
-//            )
-//            .datePickerStyle(.compact)
-        YellowButton(titulo: "Seguinte") {
+        YellowButton(titulo: "Postar") {
         }
+        .disabled(
+            postPhotoCamera.isEmpty || postPhotoPlace.isEmpty
+        )
+//        .disabled(
+//            postPhotoCamera.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+//            postPhotoPlace.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+//        )
         
     }
         .navigationTitle("Adicionar Foto")
