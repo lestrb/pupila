@@ -10,9 +10,9 @@ import CloudKit
 
 protocol UserServiceProtocol {
     func createUser (_ user: User) async throws -> User
-    func fetchUser (by id: CKRecord.ID) async throws -> User?
+    func fetchUser (by id: CKRecord.ID) async throws -> User? // Opcional porque pode não existir o User
     func updateUser (_ user: User) async throws -> User
-    func deleteUser (by id: CKRecord.ID) async throws
+    func deleteUser (by id: CKRecord.ID) async throws // User deletado, nada é retornado
 }
 
 class UserService: UserServiceProtocol{
@@ -31,14 +31,14 @@ class UserService: UserServiceProtocol{
     }
 
     func fetchUser(by id: CKRecord.ID) async throws -> User? {
-        return try await manager.search(for: id, on: database)
+        return try await manager.search(for: id, on: database) // O tratamento de erro ja acontece no search do CloudKitManager
     }
     
     func updateUser(_ user: User) async throws -> User {
-        // falta implementar
+        return try await manager.save(user, on: database) // Se existe, sobrescreve. Se não, cria novo
     }
     
     func deleteUser(by id: CKRecord.ID) async throws {
-        // falta implementar
+        try await manager.delete(for: id, on: database)
     }
 }
