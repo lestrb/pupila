@@ -8,24 +8,39 @@
 import SwiftUI
 
 struct GalleryCardView: View {
-    var body: some View {
-        
-        
-        var galleryName = "Casamento"
-        var galleryPhotoCounter = 2
-        var galleryCover = "casamento"
-        var galleryDeadline = 2
+    
+    var galleryName: String
+    var galleryCoverURL: URL?
+    var isOpen: Bool
+    var galleryPhotoCounter: Int64
+    var galleryDeadline: Date
+    
+    var daysRemaining: Int {
+        Calendar.current.dateComponents([.day], from: Date(), to: galleryDeadline).day ?? 0 }
 
-        
+    
+    var body: some View {
         ZStack(alignment: .bottomTrailing) {
             
             HStack {
                 
                 ZStack {
                     
-                    Image(galleryCover)
-                        .colorMultiply(.gray)
-                    
+                    if let galleryCoverURL = galleryCoverURL {
+                        AsyncImage(url: galleryCoverURL) { image
+                            
+                            in image
+                                .resizable()
+                                .scaledToFill()
+                                .colorMultiply(.gray)
+                            
+                        } placeholder: {
+                            Color.black
+                        }
+                    } else {
+                            Color.black
+                        }
+                        
                         VStack(spacing: 30) {
                             
                             VStack { Text(galleryName)
@@ -36,24 +51,29 @@ struct GalleryCardView: View {
                             }
                             // variável de quantidade de fotos in casamento
                         }
+                    }
+                    
                 }
+                .frame(width: 350, height: 160)
+                .cornerRadius(30)
                 
+            if isOpen {
+                Label(
+                    "\(daysRemaining) \(daysRemaining == 1 ? "dia restante" : "dias restantes")", systemImage: "timer")
+                    .fontWeight(.semibold)
+                    .font(.caption)
+                    .padding()
+                //GalleryCheckButton
+              }
             }
-            .frame(width: 350, height: 160)
-            .cornerRadius(30)
+            .foregroundStyle(.white)
+            //        teste
             
-            GalleryDeadlineDetailView()
-            //GalleryCheckButton
-
+            
+            
         }
-        .foregroundStyle(.white)
-//        teste
-
-        
-
     }
-}
 
 #Preview {
-    GalleryCardView()
+    GalleryCardView(galleryName: "Casamento", galleryCoverURL: nil, isOpen: true, galleryPhotoCounter: 12, galleryDeadline: .now)
 }

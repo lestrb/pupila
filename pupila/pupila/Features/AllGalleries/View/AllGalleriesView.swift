@@ -8,17 +8,50 @@
 import SwiftUI
 
 struct AllGalleriesView: View {
+    
+    @State var selected: SegmentedControlGalleryView.IsOpenFilter = .open
+    
+    var filteredGalleries: [Gallery] {
+        
+        Gallery.mockData.filter { gallery in
+            
+            selected == .open ? gallery.isOpen : !gallery.isOpen
+            
+        }
+                
+    }
+    
     var body: some View {
         
-//        Picker("Abertas")
-//            .pickerStyle(SegmentedPickerStyle)
-     
+       
         NavigationStack {
             
+            VStack {
+                SegmentedControlGalleryView(selected: $selected)
+                
+            }
+            .padding()
+            
             ScrollView {
-                GalleryCardView()
-                GalleryCardView()
-                GalleryCardView()
+                
+                    ForEach(filteredGalleries, id: \.galleryID) { gallery in
+                        
+                        NavigationLink(value: gallery) {
+                            
+                            GalleryCardView(
+                                galleryName: gallery.galleryName, galleryCoverURL: gallery.galleryCoverURL, isOpen: (gallery.galleryCoverURL == nil), galleryPhotoCounter: gallery.galleryPhotoCounter, galleryDeadline: gallery.galleryDeadline
+                            )
+                            
+                        }
+                        .buttonStyle(.plain)
+
+                    }
+                    
+
+            }
+            .navigationDestination(for: Gallery.self) { gallery in
+                
+                GalleryView(gallery: gallery)
                 
             }
             .padding()
@@ -33,7 +66,6 @@ struct AllGalleriesView: View {
                 
                 
             }
-            //ForEach - If Abertas
         }
 
         
