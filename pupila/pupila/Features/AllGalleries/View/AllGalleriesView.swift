@@ -34,7 +34,7 @@ struct AllGalleriesView: View {
             
             ScrollView {
                 
-                    ForEach(filteredGalleries, id: \.galleryID) { gallery in
+                    ForEach(filteredGalleries) { gallery in
                         
                         NavigationLink(value: gallery) {
                             
