@@ -8,11 +8,13 @@
 import Foundation
 import CloudKit
 
-struct User: Identifiable {
+struct User: Identifiable, CloudKitProtocol, Hashable {
     // Retornados pela Apple com o login
-    let id: String // AppleID do usuário (userIdentifier)
+    let appleID: String // AppleID do usuário (userIdentifier)
     var name: String
     var email: String
+    
+    let id: CKRecord.ID // id pro database
     
     // Escolhidos pelo usuário
     var userName: String
@@ -23,7 +25,7 @@ struct User: Identifiable {
     // Chaves pra mapear no CloudKit
     enum RecordKeys {
         static let recordType = "User"
-        static let id = "appleID"
+        static let appleID = "appleID"
         static let name = "name"
         static let email = "email"
         static let userName = "userName"
@@ -33,10 +35,11 @@ struct User: Identifiable {
     }
     
     // Cria o usuário na memória do app
-    init(id: String, name: String, email: String, userName: String = "", userPic: URL? = nil, userBio: String = "", userLinks: [String] = []) {
-        self.id = id
+    init(appleID: String, name: String, email: String, id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString), userName: String = "", userPic: URL? = nil, userBio: String = "", userLinks: [String] = []) {
+        self.appleID = appleID
         self.name = name
         self.email = email
+        self.id = id
         self.userName = userName
         self.userPic = userPic
         self.userBio = userBio
@@ -46,16 +49,18 @@ struct User: Identifiable {
     // Decodificador de CloudKit pra Swift
     init?(record: CKRecord) {
         // Garante que os dados obrigatórios da Apple existem
-        guard let id = record[RecordKeys.id] as? String,
+        guard let appleID = record[RecordKeys.appleID] as? String,
                 let name = record[RecordKeys.name] as? String,
                 let email = record[RecordKeys.email] as? String else {
             return nil
         }
         
-        self.id = id
+        self.appleID = appleID
         self.name = name
         self.email = email
         
+        self.id = record.recordID
+    
         // Dados do usuário
         self.userName = record[RecordKeys.userName] as? String ?? ""
         self.userBio = record[RecordKeys.userBio] as? String ?? ""
@@ -69,11 +74,11 @@ struct User: Identifiable {
     }
     
     // Codificador de Swift pra CloudKit
-    var record: CKRecord {
-        let recordID = CKRecord.ID(recordName: id)
+    func toRecord() -> CKRecord {
+        let recordID = CKRecord.ID(recordName: appleID)
         let record = CKRecord(recordType: RecordKeys.recordType, recordID: recordID)
         
-        record[RecordKeys.id] = id as CKRecordValue
+        record[RecordKeys.appleID] = appleID as CKRecordValue
         record[RecordKeys.name] = name as CKRecordValue
         record[RecordKeys.email] = email as CKRecordValue
         
