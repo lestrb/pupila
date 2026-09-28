@@ -12,7 +12,7 @@ protocol PostServiceProtocol { //forcando o post service a seguir esses formatos
     func createPost(_ post: Post) async throws -> Post
     func searchPosts(forUser UserID: CKRecord.ID) async throws -> [Post]
     func searchPosts(forGallery galleryID: CKRecord.ID) async throws -> [Post]
-    
+    func deletePost(_ id: CKRecord.ID) async throws
 }
 
 class PostService: PostServiceProtocol {
