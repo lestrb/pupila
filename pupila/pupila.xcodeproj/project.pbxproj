@@ -10,23 +10,9 @@
 		ACD09CFD305437DB001A4CF1 /* pupila.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pupila.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ACB0EC713062BDF20032B56C /* Exceptions for "pupila" folder in "pupila" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Features/PostForm/OtherUserProfile/View/OtherUserProfileVIew.swift,
-				Features/PostForm/OtherUserProfile/ViewModel/OtherUserProfileVIewModel.swift,
-			);
-			target = ACD09CFC305437DB001A4CF1 /* pupila */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		ACD09CFF305437DB001A4CF1 /* pupila */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ACB0EC713062BDF20032B56C /* Exceptions for "pupila" folder in "pupila" target */,
-			);
 			path = pupila;
 			sourceTree = "<group>";
 		};
@@ -100,11 +86,11 @@
 				};
 			};
 			buildConfigurationList = ACD09CF8305437DB001A4CF1 /* Build configuration list for PBXProject "pupila" */;
-			developmentRegion = en;
+			developmentRegion = "pt-BR";
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				"pt-BR",
 			);
 			mainGroup = ACD09CF4305437DB001A4CF1;
 			minimizedProjectReferenceProxies = 1;
@@ -287,12 +273,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.michel.pupila;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -321,12 +311,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.michel.pupila;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
