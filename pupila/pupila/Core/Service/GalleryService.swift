@@ -10,6 +10,7 @@ import CloudKit
 
 protocol GalleryServiceProtocol {
     func createGallery(_ gallery: Gallery) async throws -> Gallery
+    func deleteGallery(_ id: CKRecord.ID) async throws
 }
 
 class GalleryService: GalleryServiceProtocol {
@@ -25,5 +26,9 @@ class GalleryService: GalleryServiceProtocol {
         let savedGallery = try await manager.save(gallery, on: database)
         
         return savedGallery
+    }
+    
+    func deleteGallery(_ id: CKRecord.ID) async throws {
+        try await manager.delete(for: id, on: database)
     }
 }
