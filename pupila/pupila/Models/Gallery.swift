@@ -68,7 +68,7 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
     func toRecord() -> CKRecord {
         let record = CKRecord(recordType: RecordKey.recordType, recordID: id)
         record[RecordKey.galleryName] = galleryName as CKRecordValue
-        record[RecordKey.isOpen] = (isOpen ? 1 : 0) as CKRecordValue
+        record[RecordKey.isOpen] = isOpen as CKRecordValue
         record[RecordKey.galleryDeadline] = galleryDeadline as CKRecordValue
         record[RecordKey.galleryPhotoCounter] = galleryPhotoCounter as CKRecordValue
         
