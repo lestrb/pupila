@@ -17,13 +17,15 @@ protocol PostServiceProtocol { //forcando o post service a seguir esses formatos
 
 class PostService: PostServiceProtocol {
     private let manager: CloudKitManager
+    private let database: CKDatabase
     
     init(manager: CloudKitManager = .shared) {
         self.manager = manager
+        self.database = manager.publicDB //boas praticas coisa e tal e tal e coisa e pa e bra
     }
     
     func createPost(_ post: Post) async throws -> Post {
-        let savedPost = try await manager.save(post, on: manager.publicDB)
+        let savedPost = try await manager.save(post, on: database)
         
         return savedPost
     }
@@ -35,7 +37,7 @@ class PostService: PostServiceProtocol {
         let query = CKQuery(recordType: Post.RecordKey.recordType, predicate: predicate)
         query.sortDescriptors = [NSSortDescriptor(key: Post.RecordKey.postDate, ascending: false)] //ordenando pela data do maior pro menor
         
-        let records: [Post] = try await manager.search(with: query, on: manager.publicDB) //tem que ser explicitamente do [Post] pra dar certo
+        let records: [Post] = try await manager.search(with: query, on: database) //tem que ser explicitamente do [Post] pra dar certo
         
         return records
     }
@@ -47,8 +49,12 @@ class PostService: PostServiceProtocol {
         let query = CKQuery(recordType: Post.RecordKey.recordType, predicate: predicate)
         query.sortDescriptors = [NSSortDescriptor(key: Post.RecordKey.postDate, ascending: false)]
         
-        let records: [Post] = try await manager.search(with: query, on: manager.publicDB)
+        let records: [Post] = try await manager.search(with: query, on: database)
         
         return records
+    }
+    
+    func deletePost(_ id: CKRecord.ID) async throws {
+        try await manager.delete(for: id, on: database)
     }
 }
