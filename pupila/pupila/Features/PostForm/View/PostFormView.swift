@@ -28,7 +28,6 @@ struct PostFormView: View {
                                     .resizable()
                                     .scaledToFill()
                                     .frame(maxWidth: .infinity)
-                                    .aspectRatio(4/3, contentMode: .fit)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                         } else {
                             RoundedRectangle(cornerRadius: 12)
