@@ -10,23 +10,9 @@
 		ACD09CFD305437DB001A4CF1 /* pupila.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pupila.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ACB0EC713062BDF20032B56C /* Exceptions for "pupila" folder in "pupila" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Features/PostForm/OtherUserProfile/View/OtherUserProfileVIew.swift,
-				Features/PostForm/OtherUserProfile/ViewModel/OtherUserProfileVIewModel.swift,
-			);
-			target = ACD09CFC305437DB001A4CF1 /* pupila */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		ACD09CFF305437DB001A4CF1 /* pupila */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ACB0EC713062BDF20032B56C /* Exceptions for "pupila" folder in "pupila" target */,
-			);
 			path = pupila;
 			sourceTree = "<group>";
 		};
