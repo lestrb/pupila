@@ -6,22 +6,78 @@
 //
 
 import Foundation
-import SwiftData
-import SwiftUI
+import CloudKit
 
-@Model
-class Gallery: Identifiable {
+struct Gallery: Identifiable, CloudKitProtocol, Hashable {
     
+    enum RecordKey {
+        static let recordType = "Gallery"
+        static let galleryName = "galleryName"
+        static let galleryDeadline = "galleryDeadline"
+        static let isOpen = "isOpen"
+        static let galleryPhotoCounter = "galleryPhotoCounter"
+        static let galleryCover = "galleryCover"
+    }
+    
+    var id: CKRecord.ID
     var galleryName: String
-    var galleryPosts: [Post]
+    var galleryDeadline: Date
+    var galleryCoverURL: URL?
     var isOpen: Bool
-    var galleryCover: Image
+    var galleryPhotoCounter: Int64
     
-    init(galleryName: String, galleryPosts: [Post], isOpen: Bool, galleryCover: Image) {
+    
+    init(
+        id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
+        galleryName: String,
+        galleryDeadline: Date = Date(),
+        galleryCoverURL: URL? = nil,
+        isOpen: Bool = true,
+        galleryPhotoCounter: Int64
         
+    ) {
+        self.id = id
         self.galleryName = galleryName
-        self.galleryPosts = galleryPosts
+        self.galleryDeadline = galleryDeadline
+        self.galleryCoverURL = galleryCoverURL
         self.isOpen = isOpen
-        self.galleryCover = galleryCover
+        self.galleryPhotoCounter = galleryPhotoCounter
+    }
+    
+    init?(record:CKRecord) {
+        guard let galleryName = record[RecordKey.galleryName] as? String,
+              let galleryDeadline = record[RecordKey.galleryDeadline] as? Date,
+              let galleryPhotoCounter = record[RecordKey.galleryPhotoCounter] as? Int64,
+              let isOpen = record[RecordKey.isOpen] as? Bool else {
+            return nil
+        }
+        
+        self.id = record.recordID
+        self.galleryName = galleryName
+        self.galleryDeadline = galleryDeadline
+        self.galleryPhotoCounter = galleryPhotoCounter
+        self.isOpen = isOpen
+                
+        if let asset = record[RecordKey.galleryCover] as? CKAsset {
+            self.galleryCoverURL = asset.fileURL
+        } else {
+            self.galleryCoverURL = nil
+        }
+    }
+    
+    func toRecord() -> CKRecord {
+        let record = CKRecord(recordType: RecordKey.recordType, recordID: id)
+        record[RecordKey.galleryName] = galleryName as CKRecordValue
+        record[RecordKey.isOpen] = (isOpen ? 1 : 0) as CKRecordValue
+        record[RecordKey.galleryDeadline] = galleryDeadline as CKRecordValue
+        record[RecordKey.galleryPhotoCounter] = galleryPhotoCounter as CKRecordValue
+        
+        if let coverURL = galleryCoverURL {
+            let asset = CKAsset(fileURL: coverURL)
+            record[RecordKey.galleryCover] = asset
+        }
+        
+        return record
+        
     }
 }
