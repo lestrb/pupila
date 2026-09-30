@@ -18,6 +18,8 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         static let postDate = "postDate"
         static let isPublic =  "isPublic"
         static let postPhoto = "postPhoto"
+        static let postPhotoCamera = "postPhotoCamera"
+        static let postPhotoPlace = "postPhotoPlace"
     }
     
     let id: CKRecord.ID
@@ -27,6 +29,8 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
     var postDate: Date
     var isPublic: Bool
     var postPhotoURL: URL? //URL da imagem salva em disco que vamos passar como CKAsset 😎
+    var postPhotoCamera: String?
+    var postPhotoPlace: String?
         
     init( //inicializando o post com valores padrao
         id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
@@ -35,7 +39,9 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         postDescription: String? = nil, //a descricao eh opcional mesmo?sim
         postDate: Date = Date(),
         isPublic: Bool = true, //todo post publicado inicialmente eh publico ok? ok.
-        postPhotoURL: URL? = nil
+        postPhotoURL: URL? = nil,
+        postPhotoCamera: String? = nil,
+        postPhotoPlace: String? = nil
     ) { //ainda é preciso inicializar a struct com o init padrao (para alem do init?)
         self.id = id
         self.postUserID = postUserID
@@ -44,6 +50,8 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         self.postDate = postDate
         self.isPublic = isPublic
         self.postPhotoURL = postPhotoURL
+        self.postPhotoCamera = postPhotoCamera
+        self.postPhotoPlace = postPhotoPlace
     }
     
     init?(record: CKRecord) { //lendo da nuvem
@@ -61,6 +69,8 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         self.isPublic = isPublic
         
         self.postDescription = record[RecordKey.postDescription] as? String
+        self.postPhotoCamera = record[RecordKey.postPhotoCamera] as? String
+        self.postPhotoPlace = record[RecordKey.postPhotoPlace] as? String
         //eventualmente vai ter a logica pra baixar da nuvem e salvar no disco do iphone
         if let asset = record[RecordKey.postPhoto] as? CKAsset {
             self.postPhotoURL = asset.fileURL
@@ -78,6 +88,14 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         
         if let postDescription = postDescription {
             record[RecordKey.postDescription] = postDescription as CKRecordValue
+        }
+        
+        if let postPhotoCamera = postPhotoCamera {
+            record[RecordKey.postPhotoCamera] = postPhotoCamera as CKRecordValue
+        }
+        
+        if let postPhotoPlace = postPhotoPlace {
+            record[RecordKey.postPhotoPlace] = postPhotoPlace as CKRecordValue
         }
         
         if let photoURL = postPhotoURL { //desempacotando photoURL
