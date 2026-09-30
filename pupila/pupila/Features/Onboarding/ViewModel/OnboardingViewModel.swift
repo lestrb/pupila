@@ -12,6 +12,12 @@ import AuthenticationServices
 @MainActor
 final class OnboardingViewModel {
     
+    struct OnboardingItem {
+        var id: Int
+        var imageName: String
+        var title: String
+        var description: String
+    }
     
     var currentPage: Int = 0
     var isLoading: Bool = false
