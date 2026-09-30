@@ -31,3 +31,17 @@ extension Gallery {
     ]
     
 }
+
+
+extension User {
+    
+    static let mockData: [User] = [
+        
+        User(
+            
+            appleID: "mock-apple-id-001", name: "Michel", email: "chellolivy@email.com", userName: "chellsilva", userBio: "A persistência é o caminho seguro para o êxito profissional e pessoal. Cada pequeno obstáculo superado")
+        
+    ]
+    
+    
+}

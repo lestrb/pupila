@@ -14,6 +14,7 @@ struct GalleryView: View {
     var body: some View {
         
         Text(gallery.galleryName)
+        
     }
 }
 
