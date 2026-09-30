@@ -20,6 +20,7 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         static let postPhoto = "postPhoto"
         static let postPhotoCamera = "postPhotoCamera"
         static let postPhotoPlace = "postPhotoPlace"
+        static let postPhotoDate = "postPhotoDate"
     }
     
     let id: CKRecord.ID
@@ -31,6 +32,7 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
     var postPhotoURL: URL? //URL da imagem salva em disco que vamos passar como CKAsset 😎
     var postPhotoCamera: String?
     var postPhotoPlace: String?
+    var postPhotoDate: Date
         
     init( //inicializando o post com valores padrao
         id: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString),
@@ -41,7 +43,8 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         isPublic: Bool = true, //todo post publicado inicialmente eh publico ok? ok.
         postPhotoURL: URL? = nil,
         postPhotoCamera: String? = nil,
-        postPhotoPlace: String? = nil
+        postPhotoPlace: String? = nil,
+        postPhotoDate: Date = Date()
     ) { //ainda é preciso inicializar a struct com o init padrao (para alem do init?)
         self.id = id
         self.postUserID = postUserID
@@ -52,13 +55,15 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         self.postPhotoURL = postPhotoURL
         self.postPhotoCamera = postPhotoCamera
         self.postPhotoPlace = postPhotoPlace
+        self.postPhotoDate = postPhotoDate
     }
     
     init?(record: CKRecord) { //lendo da nuvem
         guard let postUserID = record[RecordKey.postUserID] as? CKRecord.Reference,
               let postGalleryID = record[RecordKey.postGalleryID] as? CKRecord.Reference, //o CKRecord funciona como um dicionario!! to atribuindo a string "postDescription"
               let postDate = record[RecordKey.postDate] as? Date,
-              let isPublic = record[RecordKey.isPublic] as? Bool else {
+              let isPublic = record[RecordKey.isPublic] as? Bool,
+        let postPhotoDate = record[RecordKey.postPhotoDate] as? Date else {
             return nil
         }
         
@@ -71,6 +76,7 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         self.postDescription = record[RecordKey.postDescription] as? String
         self.postPhotoCamera = record[RecordKey.postPhotoCamera] as? String
         self.postPhotoPlace = record[RecordKey.postPhotoPlace] as? String
+        self.postPhotoDate = postPhotoDate
         //eventualmente vai ter a logica pra baixar da nuvem e salvar no disco do iphone
         if let asset = record[RecordKey.postPhoto] as? CKAsset {
             self.postPhotoURL = asset.fileURL
@@ -85,6 +91,7 @@ struct Post: Identifiable, CloudKitProtocol, Hashable {
         record[RecordKey.postGalleryID] = postGalleryID
         record[RecordKey.postDate] = postDate as CKRecordValue //transformando no tipo legivel pelo bd
         record[RecordKey.isPublic] = isPublic as CKRecordValue
+        record[RecordKey.postPhotoDate] = postPhotoDate as CKRecordValue
         
         if let postDescription = postDescription {
             record[RecordKey.postDescription] = postDescription as CKRecordValue
