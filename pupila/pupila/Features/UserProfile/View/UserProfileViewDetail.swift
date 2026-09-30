@@ -22,7 +22,7 @@ struct UserProfileViewDetail: View {
                          image
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 105, height: 115)
+                            .frame(width: 80, height: 115)
                             .clipShape(Circle())
                         
                     } placeholder: {
@@ -39,14 +39,16 @@ struct UserProfileViewDetail: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text(user.userName)
+                    Text(user.name)
                         .fontWeight(.bold)
                     Text(user.userBio)
                         .font(.subheadline)
                         .fontWeight(.light)
+
                     
                 }
-                .padding(10)
+                .frame(width: 230, height: 120)
+                .padding()
                 
             }
             

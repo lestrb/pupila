@@ -13,6 +13,9 @@ struct UserProfileView: View {
         
         UserProfileViewDetail(user: User.mockData[0])
         
+       
+        
+        
     }
     
 }
