@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct PostFormViewNext: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var postPhotoCamera = ""
     @State private var postPhotoPlace = ""
     @State private var dataSelecionada = Date()
+    @FocusState private var isTextFieldFocused: Bool
+    let onClose: () -> Void
     var body: some View {
         VStack{
             
@@ -18,6 +21,8 @@ struct PostFormViewNext: View {
             Section(){
                 TextField("Adicione a camera da fotografia", text: $postPhotoCamera, axis: .vertical)
                     .lineLimit(1...2)
+                    .focused($isTextFieldFocused)
+                    .submitLabel(.done)
                     .onChange(of: postPhotoCamera){
                         postPhotoCamera = String(postPhotoCamera.prefix(55))
                         }
@@ -25,6 +30,7 @@ struct PostFormViewNext: View {
                     .textFieldStyle(.plain)
                     .padding(15)
                     .background(.capsulePupila.opacity(0.24), in: .buttonBorder)
+                
             } header: {
                 HStack{
                     Text("Camera:")
@@ -40,6 +46,7 @@ struct PostFormViewNext: View {
             Section(){
                 TextField("Adicione o local da fotografia", text: $postPhotoPlace, axis: .vertical)
                     .lineLimit(1...3)
+                    .focused($isTextFieldFocused)
                     .onChange(of: postPhotoPlace){
                         postPhotoPlace = String(postPhotoPlace.prefix(75))
                         }
@@ -70,25 +77,41 @@ struct PostFormViewNext: View {
         }
         .scrollContentBackground(.hidden)
         .background(.white)
-        YellowButton(titulo: "Postar") {
-        }
-        .disabled(
-            postPhotoCamera.isEmpty || postPhotoPlace.isEmpty
-        )
-//        .disabled(
-//            postPhotoCamera.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-//            postPhotoPlace.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-//        )
+            if !isTextFieldFocused {
+                YellowButton(titulo: "Postar") {
+                }
+                .disabled(
+                    postPhotoCamera.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                    postPhotoPlace.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                )
+            }
         
     }
         .navigationTitle("Adicionar Foto")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    if isTextFieldFocused {
+                        isTextFieldFocused = false
+                    } else {
+                        onClose()
+                    }
+                } label: {
+                    Image(systemName: isTextFieldFocused ? "checkmark" : "xmark")
+//                        .foregroundStyle(isTextFieldFocused ? .yellowPupila : .primary)
+                    // se quiserem tentar pintar o botao da toolbar
+                }
+            }
+        }
+        
 }
 }
 
 #Preview {
     NavigationStack{
-        PostFormViewNext()
+        PostFormViewNext(){
+        }
     }
 }
 

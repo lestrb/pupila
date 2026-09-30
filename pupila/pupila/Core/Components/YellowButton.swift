@@ -16,6 +16,7 @@ struct YellowButton: View {
             Text(titulo)
                             .font(.headline)
                             .frame(maxWidth: .infinity)
+                            .foregroundStyle(.blackPupila)
         }
         .controlSize(.large)
         .buttonStyle(.glassProminent)
