@@ -9,19 +9,18 @@ import SwiftUI
 import AuthenticationServices
 
 @Observable
-@MainActor
+@MainActor //vejamos
+
 final class OnboardingViewModel {
-    
-    struct OnboardingItem {
-        var id: Int
-        var imageName: String
-        var title: String
-        var description: String
-    }
     
     var currentPage: Int = 0
     var isLoading: Bool = false
     var errorMessage: String?
+    
+    var isShowingError: Bool {
+            get { errorMessage != nil }
+            set { if !newValue { errorMessage = nil } }
+        }
     
     let pages: [OnboardingItem] = [
         OnboardingItem(
@@ -45,7 +44,7 @@ final class OnboardingViewModel {
     ]
     
     var isLastPage: Bool {
-        currentPage == pages.count - 1
+        currentPage == pages.count - 1 //que propriedade computada viu. eh tanto acucar sintatico que fica complicado
     }
     
 
@@ -75,14 +74,12 @@ final class OnboardingViewModel {
             let userId = credential.user
             let email = credential.email
             let fullName = credential.fullName
-            let identityToken = credential.identityToken
             
             print("Usuário autenticado: \(userId)")
             if let email { print("Email: \(email)") }
             if let fullName { print("Nome: \(fullName.formatted())") }
             
         case .failure(let error):
-            
             let nsError = error as NSError
             if nsError.code != ASAuthorizationError.canceled.rawValue {
                 self.errorMessage = error.localizedDescription

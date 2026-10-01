@@ -9,7 +9,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct OnboardingView: View {
-    @State private var viewModel = OnboardingViewModel()
+    @State private var viewModel = OnboardingViewModel() //eh um binding pra uma view 😶‍🌫️
     
     private let topYellow = Color(red: 255/255, green: 195/255, blue: 50/255)
     
@@ -38,15 +38,13 @@ struct OnboardingView: View {
                 dotsIndicator
             }
         }
-        .alert("Atenção", isPresented: Binding(
-            get: { viewModel.errorMessage != nil },
-            set: { if !$0 { viewModel.errorMessage = nil } }
-        )) {
+        .alert("Atenção", isPresented: $viewModel.isShowingError) { //mais seguro assim
             Button("OK", role: .cancel) { }
         } message: {
             Text(viewModel.errorMessage ?? "")
         }
     }
+    
     private var headerView: some View {
         HStack(spacing: 2) {
             Text("Pupila")
