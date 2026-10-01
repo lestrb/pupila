@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import CloudKit
+import AuthenticationServices
 
-Feat/Onboarding
 @Observable
-@MainActor //vejamos
+@MainActor
 
 final class OnboardingViewModel {
     
@@ -18,9 +19,9 @@ final class OnboardingViewModel {
     var errorMessage: String?
     
     var isShowingError: Bool {
-            get { errorMessage != nil }
-            set { if !newValue { errorMessage = nil } }
-        }
+        get { errorMessage != nil }
+        set { if !newValue { errorMessage = nil } }
+    }
     
     let pages: [OnboardingItem] = [
         OnboardingItem(
@@ -47,7 +48,7 @@ final class OnboardingViewModel {
         currentPage == pages.count - 1
     }
     
-
+    
     func nextPage() {
         guard !isLastPage else { return }
         currentPage += 1
@@ -58,7 +59,7 @@ final class OnboardingViewModel {
     }
     
     
-  // implementar depois de joao e let concluirem as services
+    // implementar depois de joao e let concluirem as services
     func handleAppleSignInRequest(_ request: ASAuthorizationAppleIDRequest) {
         request.requestedScopes = [.fullName, .email]
     }
@@ -86,14 +87,5 @@ final class OnboardingViewModel {
             }
             print("Erro no Apple Sign-In: \(error.localizedDescription)")
         }
-
-struct OnboardingViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-main
     }
-}
-
-#Preview {
-    OnboardingViewModel()
 }
