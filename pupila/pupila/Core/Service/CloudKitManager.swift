@@ -17,13 +17,13 @@ class CloudKitManager {
     
     private init() {} //aqui a gente forca o construtor do container a pertencer somente ao CloudKitManager
     
-    func save <T: CloudKitProtocol> (_ item: T, no banco: CKDatabase) async throws -> T {
-        _ = try await banco.save(item.toRecord())
+    func save <T: CloudKitProtocol> (_ item: T, on database: CKDatabase) async throws -> T {
+        _ = try await database.save(item.toRecord())
         
         return item
     }
     
-    func search<T: CloudKitProtocol> (for id: CKRecord.ID, on database: CKDatabase) async throws -> T? {
+    func search<T: CloudKitProtocol> (for id: CKRecord.ID, on database: CKDatabase) async throws -> T? { //busca singular
         do {
             let record = try await database.record(for: id)
             return T(record: record)
@@ -34,6 +34,23 @@ class CloudKitManager {
         } catch {
             throw error //se der alguma qualquer outra bronca hihihihihi
         }
+    }
+    
+    func search<T: CloudKitProtocol> (with query: CKQuery, on database: CKDatabase) async throws -> [T] { //busca plural
+        let (matchResults, _) = try await database.records(matching: query)
+        
+        var results: [T] = matchResults.compactMap { (_ id, result) in
+            switch result { //tratamento de errinhos na pesquisa
+            case .success(let record):
+                return T(record: record)
+                
+            case .failure:
+                return nil
+            }
+        }
+        
+        
+        return results
     }
     
     func delete(for id: CKRecord.ID, on database: CKDatabase) async throws {

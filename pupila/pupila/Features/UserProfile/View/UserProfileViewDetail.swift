@@ -8,34 +8,47 @@
 import SwiftUI
 
 struct UserProfileViewDetail: View {
+    
+    var user: User
+
     var body: some View {
         
-        var userName = "Michel"
-        var userPic = "fotografoprofile"
-        var userBio = "A persistência é o caminho seguro para o êxito profissional e pessoal. Cada pequeno obstáculo superado"
-        
-        
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             
-            HStack{
+            HStack{ 
                 
-                
-                Image(userPic)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 105, height: 115)
-                    .clipShape(Circle())
-                
-                
-                VStack(alignment: .leading) {
-                    Text(userName)
-                        .fontWeight(.bold)
-                    Text(userBio)
-                        .font(.subheadline)
-                        .fontWeight(.light)
+                if let userPic = user.userPic {
+                    AsyncImage(url: userPic) { image in
+                         image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80, height: 115)
+                            .clipShape(Circle())
+                        
+                    } placeholder: {
+                        Image(systemName: "person.circle.fill")
+                    }
+                } else {
+                    
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 115)
+                        .clipShape(Circle())
                     
                 }
-                .padding(10)
+                
+                VStack(alignment: .leading) {
+                    Text(user.name)
+                        .fontWeight(.bold)
+                    Text(user.userBio)
+                        .font(.subheadline)
+                        .fontWeight(.light)
+
+                    
+                }
+                .frame(width: 230, height: 120)
+                .padding()
                 
             }
             
@@ -50,9 +63,10 @@ struct UserProfileViewDetail: View {
         .frame(width: 356, height: 159)
         
     }
+    
 }
 
 
 #Preview {
-    UserProfileViewDetail()
+    UserProfileViewDetail(user: User.mockData[0])
 }

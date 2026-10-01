@@ -48,7 +48,7 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
         guard let galleryName = record[RecordKey.galleryName] as? String,
               let galleryDeadline = record[RecordKey.galleryDeadline] as? Date,
               let galleryPhotoCounter = record[RecordKey.galleryPhotoCounter] as? Int64,
-              let isOpen = record[RecordKey.isOpen] as? Int64 else {
+              let isOpen = record[RecordKey.isOpen] as? Bool else {
             return nil
         }
         
@@ -56,9 +56,9 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
         self.galleryName = galleryName
         self.galleryDeadline = galleryDeadline
         self.galleryPhotoCounter = galleryPhotoCounter
-        self.isOpen = (isOpen == 1)
+        self.isOpen = isOpen
                 
-        if let asset = record["galleryCover"] as? CKAsset {
+        if let asset = record[RecordKey.galleryCover] as? CKAsset {
             self.galleryCoverURL = asset.fileURL
         } else {
             self.galleryCoverURL = nil
@@ -68,13 +68,13 @@ struct Gallery: Identifiable, CloudKitProtocol, Hashable {
     func toRecord() -> CKRecord {
         let record = CKRecord(recordType: RecordKey.recordType, recordID: id)
         record[RecordKey.galleryName] = galleryName as CKRecordValue
-        record[RecordKey.isOpen] = (isOpen ? 1 : 0) as CKRecordValue
+        record[RecordKey.isOpen] = isOpen as CKRecordValue
         record[RecordKey.galleryDeadline] = galleryDeadline as CKRecordValue
         record[RecordKey.galleryPhotoCounter] = galleryPhotoCounter as CKRecordValue
         
         if let coverURL = galleryCoverURL {
             let asset = CKAsset(fileURL: coverURL)
-            record["galleryCover"] = asset
+            record[RecordKey.galleryCover] = asset
         }
         
         return record

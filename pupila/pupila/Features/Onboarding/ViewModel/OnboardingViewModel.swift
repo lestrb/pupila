@@ -2,12 +2,12 @@
 //  OnboardingViewModel.swift
 //  pupila
 //
-//  Created by Vyvian Freitas on 30/09/26.
+//  Created by João Fernando Gama Barros on 17/09/26.
 //
 
 import SwiftUI
-import AuthenticationServices
 
+Feat/Onboarding
 @Observable
 @MainActor //vejamos
 
@@ -86,6 +86,14 @@ final class OnboardingViewModel {
             }
             print("Erro no Apple Sign-In: \(error.localizedDescription)")
         }
+
+struct OnboardingViewModel: View {
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+main
     }
 }
 
+#Preview {
+    OnboardingViewModel()
+}
