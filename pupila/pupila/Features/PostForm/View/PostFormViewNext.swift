@@ -66,13 +66,18 @@ struct PostFormViewNext: View {
                 }
                 
             }
-            Section{
-                        DatePicker(
-                            "Data e Hora:", //titulo do picker
-                            selection: $dataSelecionada,
-                            displayedComponents: [.date, .hourAndMinute]
-                            )
-                            .datePickerStyle(.compact)
+            Section(){
+                VStack(alignment: .leading){
+                    Text("Data e Hora:")
+                        .padding(.bottom, 20)
+                        
+                    DatePicker(
+                        "", //titulo do picker
+                        selection: $dataSelecionada,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .datePickerStyle(.compact)
+                }
             }
         }
         .scrollContentBackground(.hidden)
