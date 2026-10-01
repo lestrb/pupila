@@ -68,11 +68,29 @@ struct UserPostView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             ToolbarItem(placement: .topBarTrailing) {
-                Button{
-                    
-                } label: {
-                    Image(systemName: "ellipsis")
-                }
+//                Button{
+//                    
+//                } label: {
+//                    Image(systemName: "ellipsis")
+//                }
+                Menu {
+                            Button {
+                                // Não tenho interesse
+                            } label: {
+                                Label("Não tenho interesse", systemImage: "eye.slash")
+                            }
+
+                            Button(role: .destructive) {
+                                // Denunciar
+                            } label: {
+                                Label(
+                                    "Denunciar",
+                                    systemImage: "exclamationmark.triangle"
+                                )
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                        }
             }
         }
     }
