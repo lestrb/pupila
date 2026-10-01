@@ -44,7 +44,7 @@ final class OnboardingViewModel {
     ]
     
     var isLastPage: Bool {
-        currentPage == pages.count - 1 //que propriedade computada viu. eh tanto acucar sintatico que fica complicado
+        currentPage == pages.count - 1
     }
     
 
