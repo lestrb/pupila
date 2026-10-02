@@ -18,9 +18,9 @@ class UserPostViewModel {
     private let userService: UserServiceProtocol
     
     // Injeta o Post inicial e o serviço
-    init(post: Post, userService: UserServiceProtocol = UserService()) {
+    init(post: Post, userService: UserServiceProtocol? = nil) {
         self.post = post
-        self.userService = userService
+        self.userService = userService ?? UserService() // Se a view não passar nenhum serviço, cria um
         
         // Assim que inicializar, já busca o autor daquele post
         Task { // Task é como se fosse uma bolha assíncrona independente
