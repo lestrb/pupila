@@ -11,6 +11,7 @@ import CloudKit
 protocol GalleryServiceProtocol {
     func createGallery(_ gallery: Gallery) async throws -> Gallery
     func searchGalleries(isOpen bool: Bool) async throws -> [Gallery]
+    func searchGalleries(by id: CKRecord.ID) async throws -> Gallery?
     func deleteGallery(_ id: CKRecord.ID) async throws
 }
 
@@ -31,14 +32,18 @@ class GalleryService: GalleryServiceProtocol {
     
     func searchGalleries(isOpen bool: Bool) async throws -> [Gallery] {
         //retorna as galeras segundo o filtro
-        let predicate = NSPredicate(format: "%K == %d", Gallery.RecordKey.isOpen, bool) //eu acho que funciona!! gege, me ajuda!
+        let predicate = NSPredicate(format: "%K == %@", Gallery.RecordKey.isOpen, bool)
         
         let query = CKQuery(recordType: Gallery.RecordKey.recordType, predicate: predicate)
         query.sortDescriptors = [NSSortDescriptor(key: Gallery.RecordKey.galleryDeadline, ascending: false)]
         
         let records: [Gallery] = try await manager.search(with: query, on: database)
         
-        return records //ownn. companheiras e companheiros
+        return records
+    }
+    
+    func searchGalleries(by id: CKRecord.ID) async throws -> Gallery? {
+        return try await manager.search(for: id, on: database)
     }
     
     func deleteGallery(_ id: CKRecord.ID) async throws {
