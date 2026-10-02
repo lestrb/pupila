@@ -43,14 +43,15 @@ struct UserPostView: View {
                     .padding(.vertical, 10)
                 
                 VStack(alignment: .leading){
-                    
-                Text("Fotografada em 27 de Abril de 2026")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    
-                Text("Nikon 9D7500")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    Text("Fotografada em 27 de Abril de 2026")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Text("Nikon 9D7500")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Text("Recife - PE")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
@@ -59,38 +60,33 @@ struct UserPostView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
-
-
-                    
+                
+                
+                
             }
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             ToolbarItem(placement: .topBarTrailing) {
-//                Button{
-//                    
-//                } label: {
-//                    Image(systemName: "ellipsis")
-//                }
                 Menu {
-                            Button {
-                                // Não tenho interesse
-                            } label: {
-                                Label("Não tenho interesse", systemImage: "eye.slash")
-                            }
-
-                            Button(role: .destructive) {
-                                // Denunciar
-                            } label: {
-                                Label(
-                                    "Denunciar",
-                                    systemImage: "exclamationmark.triangle"
-                                )
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                        }
+                    Button {
+                        // Não tenho interesse
+                    } label: {
+                        Label("Não tenho interesse", systemImage: "eye.slash")
+                    }
+                    
+                    Button(role: .destructive) {
+                        // Denunciar
+                    } label: {
+                        Label(
+                            "Denunciar",
+                            systemImage: "exclamationmark.triangle"
+                        )
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
             }
         }
     }
