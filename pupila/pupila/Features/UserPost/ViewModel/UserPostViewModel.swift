@@ -6,6 +6,7 @@
 //
 
 import CloudKit
+import Observation
 
 @MainActor // Atualizações de UI ocorrem na thread principal
 @Observable
@@ -49,8 +50,16 @@ class UserPostViewModel {
     }
     
     // Fetch com a gallery do post
-    
-    
+    private func fetchGallery() async {
+        isLoadingGallery = true
+        do {
+            let galleryID = post.postGalleryID.recordID
+            self.gallery = try await galleryService.searchGalleries(by: galleryID)
+        } catch {
+            print("Erro ao buscar a galeria do post: \(error.localizedDescription)")
+        }
+        isLoadingGallery = false
+    }
     
     // Funções para formatação do tipo Date pra String para a View
     
