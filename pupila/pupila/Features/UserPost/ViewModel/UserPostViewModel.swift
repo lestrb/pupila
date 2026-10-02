@@ -38,4 +38,28 @@ class UserPostViewModel {
         }
         isLoadingAuthor = false
     }
+    
+    // Funções para formatação do tipo Date pra String para a View
+    
+    // Transforma a data no formato "28 de maio"
+    var formattedPostDate: String {
+        post.postDate.formatted(
+            .dateTime
+            .day()
+            .month(.wide) // Nome do mês por extenso
+            .locale(Locale(identifier: "pt_BR"))
+        )
+    }
+    
+    // Transforma a data no formato "Fotografada em 27 de abril de 2026"
+    var formattedPhotoDate: String {
+        let dateString = post.postPhotoDate.formatted(
+            .dateTime
+            .day()
+            .month(.wide)
+            .year()
+            .locale(Locale(identifier: "pt_BR"))
+        )
+        return "Fotografada em \(dateString)"
+    }
 }
